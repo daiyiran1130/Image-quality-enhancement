@@ -1,0 +1,1068 @@
+\documentclass[border=4pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\definecolor{myblue}  {RGB}{ 31,  97, 168}
+\definecolor{mycyan}  {RGB}{ 30, 160, 200}
+\definecolor{myred}   {RGB}{204,  50,  50}
+\definecolor{mygreen} {RGB}{ 40, 145,  60}
+\definecolor{myorange}{RGB}{220, 120,  30}
+\definecolor{mygray}  {RGB}{120, 120, 120}
+
+\begin{document}
+\begin{tikzpicture}[font=\small]
+\useasboundingbox (-3.0cm,2.0cm) rectangle (42.9cm,-35.9cm);
+
+% ── PSNR | PSNR<20 ──────────────────────────────────
+\begin{axis}[
+  name=ax00,
+  at={(0.00cm,0.00cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=26.6185,
+  ymax=36.3768,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={PSNR ($\uparrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+  title={PSNR\,$<$\,20\ \ ($n=1547$)},
+  title style={font=\small\bfseries, align=center},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,34.3978) +- (0.2767,0.2752)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,27.1577) +- (0.2294,0.2283)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,31.3439) +- (0.2117,0.2158)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,31.0604) +- (0.2203,0.2129)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,30.2316) +- (0.1947,0.1866)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,34.9657) {34.398};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,27.6787) {27.158};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,28.1667) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,31.8524) {31.344};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,32.3404) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,31.5660) {31.060};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,32.0540) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,30.7109) {30.232};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,31.1989) {$***$};
+\end{axis}
+
+% ── PSNR | (20, 30) ──────────────────────────────────
+\begin{axis}[
+  name=ax01,
+  at={(10.80cm,0.00cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=29.0735,
+  ymax=42.8190,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={PSNR ($\uparrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+  title={PSNR\,$\in$\,(20,\,30)\ \ ($n=5894$)},
+  title style={font=\small\bfseries, align=center},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,40.2814) +- (0.1443,0.1376)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,29.6414) +- (0.1315,0.1225)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,35.1814) +- (0.1001,0.0916)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,34.1509) +- (0.0955,0.0878)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,31.9448) +- (0.0942,0.0973)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,40.8314) {40.281};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,30.1763) {29.641};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,30.8635) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,35.6854) {35.181};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,36.3726) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,34.6511) {34.151};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,35.3383) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,32.4545) {31.945};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,33.1417) {$***$};
+\end{axis}
+
+% ── PSNR | (30, 40) ──────────────────────────────────
+\begin{axis}[
+  name=ax02,
+  at={(21.60cm,0.00cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=29.5316,
+  ymax=45.4150,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={PSNR ($\uparrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+  title={PSNR\,$\in$\,(30,\,40)\ \ ($n=2108$)},
+  title style={font=\small\bfseries, align=center},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,42.4223) +- (0.2220,0.2194)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,30.2391) +- (0.2033,0.2074)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,36.8301) +- (0.1352,0.1363)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,35.4577) +- (0.1141,0.1195)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,32.8405) +- (0.1662,0.1622)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,43.1182) {42.422};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,30.9230) {30.239};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,31.7172) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,37.4429) {36.830};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,38.2371) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,36.0537) {35.458};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,36.8479) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,33.4792) {32.840};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,34.2734) {$***$};
+\end{axis}
+
+% ── PSNR | (40, 40+) ──────────────────────────────────
+\begin{axis}[
+  name=ax03,
+  at={(32.40cm,0.00cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=29.6760,
+  ymax=49.0632,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={PSNR ($\uparrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+  title={PSNR\,$\geq$\,40\ \ ($n=1647$)},
+  title style={font=\small\bfseries, align=center},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,45.5607) +- (0.1439,0.1174)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,30.5805) +- (0.2890,0.2224)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,38.0191) +- (0.1364,0.1264)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,36.0989) +- (0.1266,0.1254)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,33.1113) +- (0.1967,0.1906)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,46.2597) {45.561};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,31.3845) {30.581};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,32.3539) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,38.7271) {38.019};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,39.6965) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,36.8059) {36.099};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,37.7753) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,33.8835) {33.111};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,34.8529) {$***$};
+\end{axis}
+
+% ── LPIPS | PSNR<20 ──────────────────────────────────
+\begin{axis}[
+  name=ax10,
+  at={(0.00cm,-8.80cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.0345,
+  ymax=0.2327,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={LPIPS ($\downarrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.0427) +- (0.0019,0.0021)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,0.1964) +- (0.0017,0.0017)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,0.1562) +- (0.0024,0.0022)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,0.1631) +- (0.0018,0.0018)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,0.0882) +- (0.0026,0.0028)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.0507) {0.043};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,0.2040) {0.196};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,0.2140) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,0.1643) {0.156};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,0.1743) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,0.1708) {0.163};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,0.1808) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,0.0969) {0.088};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,0.1069) {$***$};
+\end{axis}
+
+% ── LPIPS | (20, 30) ──────────────────────────────────
+\begin{axis}[
+  name=ax11,
+  at={(10.80cm,-8.80cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.0252,
+  ymax=0.2301,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={LPIPS ($\downarrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.0328) +- (0.0011,0.0011)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,0.1935) +- (0.0008,0.0008)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,0.1370) +- (0.0013,0.0013)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,0.1614) +- (0.0009,0.0010)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,0.0817) +- (0.0016,0.0017)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.0400) {0.033};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,0.2004) {0.194};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,0.2107) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,0.1444) {0.137};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,0.1547) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,0.1685) {0.161};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,0.1788) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,0.0895) {0.082};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,0.0998) {$***$};
+\end{axis}
+
+% ── LPIPS | (30, 40) ──────────────────────────────────
+\begin{axis}[
+  name=ax12,
+  at={(21.60cm,-8.80cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.0212,
+  ymax=0.2285,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={LPIPS ($\downarrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.0294) +- (0.0016,0.0017)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,0.1910) +- (0.0016,0.0013)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,0.1294) +- (0.0019,0.0019)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,0.1606) +- (0.0017,0.0015)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,0.0801) +- (0.0029,0.0026)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.0373) {0.029};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,0.1985) {0.191};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,0.2089) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,0.1375) {0.129};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,0.1479) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,0.1683) {0.161};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,0.1787) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,0.0889) {0.080};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,0.0993) {$***$};
+\end{axis}
+
+% ── LPIPS | (40, 40+) ──────────────────────────────────
+\begin{axis}[
+  name=ax13,
+  at={(32.40cm,-8.80cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.0100,
+  ymax=0.2249,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={LPIPS ($\downarrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.0173) +- (0.0005,0.0005)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,0.1860) +- (0.0015,0.0014)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,0.1176) +- (0.0017,0.0018)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,0.1576) +- (0.0017,0.0015)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,0.0588) +- (0.0014,0.0016)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.0242) {0.017};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,0.1938) {0.186};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,0.2046) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,0.1258) {0.118};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,0.1366) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,0.1655) {0.158};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,0.1763) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,0.0668) {0.059};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,0.0776) {$***$};
+\end{axis}
+
+% ── VIF | PSNR<20 ──────────────────────────────────
+\begin{axis}[
+  name=ax20,
+  at={(0.00cm,-17.60cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.4847,
+  ymax=0.9526,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={VIF ($\uparrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.8663) +- (0.0045,0.0046)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,0.5032) +- (0.0036,0.0042)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,0.6476) +- (0.0039,0.0044)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,0.6260) +- (0.0033,0.0038)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,0.7923) +- (0.0051,0.0052)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.8849) {0.866};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,0.5214) {0.503};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,0.5448) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,0.6660) {0.648};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,0.6894) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,0.6438) {0.626};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,0.6672) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,0.8115) {0.792};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,0.8349) {$***$};
+\end{axis}
+
+% ── VIF | (20, 30) ──────────────────────────────────
+\begin{axis}[
+  name=ax21,
+  at={(10.80cm,-17.60cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.4887,
+  ymax=0.9485,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={VIF ($\uparrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.8657) +- (0.0023,0.0025)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,0.5052) +- (0.0019,0.0020)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,0.6712) +- (0.0020,0.0022)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,0.6223) +- (0.0018,0.0017)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,0.7870) +- (0.0027,0.0031)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.8820) {0.866};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,0.5210) {0.505};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,0.5440) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,0.6872) {0.671};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,0.7102) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,0.6378) {0.622};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,0.6608) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,0.8039) {0.787};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,0.8269) {$***$};
+\end{axis}
+
+% ── VIF | (30, 40) ──────────────────────────────────
+\begin{axis}[
+  name=ax22,
+  at={(21.60cm,-17.60cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.4981,
+  ymax=0.9579,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={VIF ($\uparrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.8737) +- (0.0042,0.0039)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,0.5162) +- (0.0035,0.0034)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,0.6884) +- (0.0034,0.0033)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,0.6283) +- (0.0028,0.0029)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,0.8009) +- (0.0047,0.0045)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.8914) {0.874};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,0.5334) {0.516};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,0.5564) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,0.7055) {0.688};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,0.7285) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,0.6450) {0.628};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,0.6680) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,0.8192) {0.801};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,0.8422) {$***$};
+\end{axis}
+
+% ── VIF | (40, 40+) ──────────────────────────────────
+\begin{axis}[
+  name=ax23,
+  at={(32.40cm,-17.60cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.5124,
+  ymax=0.9925,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={VIF ($\uparrow$)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.9069) +- (0.0018,0.0018)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,0.5315) +- (0.0039,0.0034)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,0.7134) +- (0.0033,0.0033)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,0.6415) +- (0.0029,0.0027)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,0.8450) +- (0.0026,0.0028)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.9231) {0.907};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,0.5493) {0.531};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,0.5733) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,0.7311) {0.713};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,0.7551) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,0.6586) {0.641};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,0.6826) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,0.8622) {0.845};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,0.8862) {$***$};
+\end{axis}
+
+% ── HARALICK | PSNR<20 ──────────────────────────────────
+\begin{axis}[
+  name=ax30,
+  at={(0.00cm,-26.40cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.3000,
+  ymax=16.6324,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={HARALICK ($\downarrow$, log)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+  ymode=log,
+  log basis y={10},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.9859) +- (0.0557,0.0612)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,3.1183) +- (0.1393,0.1453)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,4.5678) +- (0.1870,0.1843)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,1.9244) +- (0.0940,0.0989)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,2.6122) +- (0.1376,0.1334)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,1.5706) {0.986};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,4.8954) {3.118};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,6.6088) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,7.1282) {4.568};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,9.6230) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,3.0349) {1.924};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,4.0972) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,4.1184) {2.612};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,5.5598) {$***$};
+\end{axis}
+
+% ── HARALICK | (20, 30) ──────────────────────────────────
+\begin{axis}[
+  name=ax31,
+  at={(10.80cm,-26.40cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.3000,
+  ymax=10.7646,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={HARALICK ($\downarrow$, log)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+  ymode=log,
+  log basis y={10},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.6479) +- (0.0246,0.0244)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,3.0007) +- (0.0741,0.0749)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,3.0082) +- (0.0658,0.0617)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,1.6621) +- (0.0342,0.0354)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,1.8716) +- (0.0469,0.0488)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,1.0085) {0.648};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,4.6134) {3.001};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,6.2281) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,4.6048) {3.008};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,6.2165) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,2.5463) {1.662};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,3.4374) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,2.8806) {1.872};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,3.8888) {$***$};
+\end{axis}
+
+% ── HARALICK | (30, 40) ──────────────────────────────────
+\begin{axis}[
+  name=ax32,
+  at={(21.60cm,-26.40cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.3000,
+  ymax=10.1287,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={HARALICK ($\downarrow$, log)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+  ymode=log,
+  log basis y={10},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.5515) +- (0.0382,0.0393)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,2.7699) +- (0.1172,0.1240)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,2.5899) +- (0.0922,0.0902)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,1.4732) +- (0.0520,0.0530)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,1.6282) +- (0.0681,0.0703)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.8862) {0.551};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,4.3408) {2.770};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,5.8601) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,4.0202) {2.590};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,5.4272) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,2.2893) {1.473};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,3.0906) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,2.5477) {1.628};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,3.4395) {$***$};
+\end{axis}
+
+% ── HARALICK | (40, 40+) ──────────────────────────────────
+\begin{axis}[
+  name=ax33,
+  at={(32.40cm,-26.40cm)},
+  anchor=north west,
+  width=10.0cm,
+  height=7.0cm,
+  ybar,
+  bar width=14pt,
+  xtick={1,...,5},
+  xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
+  xticklabel style={rotate=30, anchor=east, font=\small},
+  ymin=0.3000,
+  ymax=10.1241,
+  xmin=0.2,
+  xmax=5.8,
+  ylabel={HARALICK ($\downarrow$, log)},
+  ylabel style={font=\footnotesize},
+  ymajorgrids=true,
+  grid style={dashed, gray!30},
+  tick style={thin},
+  every tick label/.style={font=\footnotesize},
+  clip=false,
+  scaled y ticks=false,
+  y tick label style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=3},
+  ymode=log,
+  log basis y={10},
+]
+
+\addplot[
+  ybar, fill=myblue!70, draw=myblue!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(1,0.2748) +- (0.0142,0.0147)};
+\addplot[
+  ybar, fill=mygray!70, draw=mygray!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(2,2.7602) +- (0.1294,0.1324)};
+\addplot[
+  ybar, fill=myred!70, draw=myred!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(3,2.5120) +- (0.1171,0.1128)};
+\addplot[
+  ybar, fill=mycyan!70, draw=mycyan!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(4,1.4380) +- (0.0503,0.0571)};
+\addplot[
+  ybar, fill=mygreen!70, draw=mygreen!90!black, line width=0.5pt,
+  error bars/.cd, y dir=both, y explicit,
+  error bar style={line width=0.8pt, black},
+] coordinates {(5,1.4350) +- (0.0642,0.0690)};
+
+\node[above, font=\tiny, inner sep=0pt, text=myblue!70!black] at (axis cs:1,0.4342) {0.275};
+\node[above, font=\tiny, inner sep=0pt, text=mygray!70!black] at (axis cs:2,4.3389) {2.760};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:2,5.8575) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=myred!70!black] at (axis cs:3,3.9372) {2.512};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:3,5.3152) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mycyan!70!black] at (axis cs:4,2.2427) {1.438};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:4,3.0276) {$***$};
+\node[above, font=\tiny, inner sep=0pt, text=mygreen!70!black] at (axis cs:5,2.2560) {1.435};
+\node[above, font=\tiny, inner sep=0pt] at (axis cs:5,3.0456) {$***$};
+\end{axis}
+
+% ── Legend ─────────────────────────────────────────────────────────
+\node[anchor=north west, font=\small] at (0cm,-34.20cm) {
+  \tikz{\fill[myblue!70] (0,0) rectangle (0.4cm,0.25cm);}~\textbf{Ours}\quad \tikz{\fill[mygray!70] (0,0) rectangle (0.4cm,0.25cm);}~SD-v1.5\quad \tikz{\fill[myred!70] (0,0) rectangle (0.4cm,0.25cm);}~MDA-Net\quad \tikz{\fill[mycyan!70] (0,0) rectangle (0.4cm,0.25cm);}~ResShift\quad \tikz{\fill[mygreen!70] (0,0) rectangle (0.4cm,0.25cm);}~GFE-Net
+};
+
+\end{tikzpicture}
+
+\end{document}
