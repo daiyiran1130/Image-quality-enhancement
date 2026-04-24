@@ -145,22 +145,17 @@ def select_models(df_raw: pd.DataFrame) -> list[str]:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # Roles → colour name defined in preamble
-ROLE_COLOUR = {
-    "Ours_model":   "myblue",       # "Ours" always gets this
-    "SD-v1.5":      "mygray",       # baseline
-    "Diffusion":    "mycyan",       # best-other-diffusion
-    "GAN":          "myred",
-    "Trans.":       "mygreen",
-    "Input":        "mygray",
-    "Pre+":         "myorange",
+# Same architecture→colour mapping as draw_figure2.py
+ARCH_COLORS = {
+    "Input":     "mygray",
+    "Diffusion": "myblue",
+    "GAN":       "myred",
+    "Trans.":    "mygreen",
+    "Pre+":      "myorange",
 }
 
 def model_colour(model: str) -> str:
-    if model == "Ours":
-        return ROLE_COLOUR["Ours_model"]
-    if model == "SD-v1.5":
-        return ROLE_COLOUR["SD-v1.5"]
-    return ROLE_COLOUR.get(ARCH_GROUP.get(model, "?"), "mygray")
+    return ARCH_COLORS.get(ARCH_GROUP.get(model, "?"), "mygray")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -222,12 +217,11 @@ def make_preamble() -> str:
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 
-\definecolor{myblue}  {RGB}{ 31,  97, 168}
-\definecolor{mycyan}  {RGB}{ 30, 160, 200}
-\definecolor{myred}   {RGB}{204,  50,  50}
-\definecolor{mygreen} {RGB}{ 40, 145,  60}
-\definecolor{myorange}{RGB}{220, 120,  30}
-\definecolor{mygray}  {RGB}{120, 120, 120}
+\definecolor{myblue}  {RGB}{55, 119, 189}
+\definecolor{myred}   {RGB}{210,  70,  70}
+\definecolor{mygreen} {RGB}{ 50, 155,  70}
+\definecolor{myorange}{RGB}{230, 130,  40}
+\definecolor{mygray}  {RGB}{130, 130, 130}
 
 \begin{document}"""
 
@@ -368,8 +362,8 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
         for row in range(len(METRICS)):
             for mi, model in enumerate(models):
                 color = model_colour(model)
-                lw    = "0.8pt" if model == "Ours" else "0.5pt"
-                op    = "0.75"  if model == "Ours" else "0.55"
+                lw    = "0.6pt"
+                op    = "0.60"
                 for col in range(len(PSNR_SCOPES) - 1):
                     c0 = f"C{row}S{col}M{mi}"
                     c1 = f"C{row}S{col+1}M{mi}"
