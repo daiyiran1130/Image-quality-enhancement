@@ -15,7 +15,7 @@ Usage
 -----
   python draw_figure2_simple.py [input.parquet] [output_stem]
 
-Generates  <stem>_with_conn.tex / .pdf  and  <stem>_no_conn.tex / .pdf.
+Generates  <stem>.tex  (connection lines controlled by SHOW_CONNECTIONS switch).
 """
 
 import re
@@ -26,7 +26,7 @@ import pandas as pd
 # Switches
 # ══════════════════════════════════════════════════════════════════════════════
 
-SHOW_CONNECTIONS: bool = True   # default; both versions always written in main()
+SHOW_CONNECTIONS: bool = True   # True → draw inter-scope connection lines
 
 LOCAL_PARQUET = r"D:\work\figure_table\figure2\classify_with_PSNR\classify_with_PSNR.parquet"
 
@@ -473,18 +473,12 @@ def main():
     data = load_data(parquet, models)
     print(f"Loaded {len(data)} data cells.")
 
-    for show_conn in [True, False]:
-        suffix   = "with_conn" if show_conn else "no_conn"
-        out_path = f"{stem}_{suffix}.tex"
-        tex = generate_tex(data, models, show_conn)
-        with open(out_path, "w", encoding="utf-8") as fh:
-            fh.write(tex)
-        print(f"Written: {out_path}")
-
-    print()
-    print("Compile with:")
-    print(f"  pdflatex {stem}_with_conn.tex")
-    print(f"  pdflatex {stem}_no_conn.tex")
+    out_path = f"{stem}.tex"
+    tex = generate_tex(data, models, SHOW_CONNECTIONS)
+    with open(out_path, "w", encoding="utf-8") as fh:
+        fh.write(tex)
+    print(f"Written: {out_path}  (connections={'on' if SHOW_CONNECTIONS else 'off'})")
+    print(f"\nCompile with:  pdflatex {out_path}")
 
 
 if __name__ == "__main__":
