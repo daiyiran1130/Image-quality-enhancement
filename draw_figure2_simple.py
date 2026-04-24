@@ -190,7 +190,7 @@ def load_data(parquet_path: str, models: list[str]) -> dict:
 
 
 def yrange(data: dict, scope: str, metric: str, models: list[str],
-           use_log: bool) -> tuple[float, float]:
+           use_log: bool, n_brackets: int = 0) -> tuple[float, float]:
     vals_hi = [data[(scope, m, metric)]["hi"] for m in models if (scope, m, metric) in data]
     vals_lo = [data[(scope, m, metric)]["lo"] for m in models if (scope, m, metric) in data]
     if not vals_hi:
@@ -199,7 +199,7 @@ def yrange(data: dict, scope: str, metric: str, models: list[str],
         return 0.3, max(vals_hi) * 3.5
     span = max(vals_hi) - min(vals_lo)
     ymin = max(0.0, min(vals_lo) - span * 0.04)
-    ymax = max(vals_hi) + span * 0.22   # headroom for sig markers + value labels
+    ymax = max(vals_hi) + span * (0.22 + 0.14 * n_brackets)
     return ymin, ymax
 
 
@@ -253,7 +253,17 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
             ax_y = -row * (SUBPLOT_H + GAP_Y)
             axname = f"ax{row}{col}"
 
-            ym, yM = yrange(data, scope, metric, models, use_log)
+            # Pre-compute significance brackets for ymax headroom
+            sig_brackets = []
+            for _mi, _m in enumerate(models):
+                if _m == "Ours":
+                    continue
+                _d = data.get((scope, _m, metric))
+                if _d and _d["sig"] and _d["sig"] not in ("nan", ""):
+                    sig_brackets.append((_mi + 1, _d["sig"]))
+            sig_brackets.sort(key=lambda t: t[0])
+
+            ym, yM = yrange(data, scope, metric, models, use_log, len(sig_brackets))
 
             # ── begin axis ────────────────────────────────────────────────────
             lines += [
@@ -336,23 +346,36 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
                     f"at (axis cs:{x},{label_y:.4f}) {{{d['val']:.3f}}};"
                 )
 
-                # Significance marker (above value label)
-                if d["sig"]:
-                    if use_log:
-                        sig_y = label_y * 1.35
-                    else:
-                        sig_y = label_y + span * 0.05
-                    lines.append(
-                        f"\\node[above, font=\\tiny, inner sep=0pt] "
-                        f"at (axis cs:{x},{sig_y:.4f}) {{${d['sig']}$}};"
-                    )
-
                 # Named coordinate at bar top for connection lines
                 if show_connections:
                     lines.append(
                         f"\\coordinate (C{row}S{col}M{mi})"
                         f" at (axis cs:{x},{d['val']:.4f});"
                     )
+
+            # ── bracket-style significance markers ────────────────────────────
+            if sig_brackets and not use_log:
+                all_hi_raw = [data[(scope, m, metric)]["hi"]
+                              for m in models if (scope, m, metric) in data]
+                all_lo_raw = [data[(scope, m, metric)]["lo"]
+                              for m in models if (scope, m, metric) in data]
+                raw_span = max(all_hi_raw) - min(all_lo_raw)
+                base_y = max(all_hi_raw) + raw_span * 0.08
+                step   = raw_span * 0.14
+                tick_h = raw_span * 0.03
+                for level, (x2, sig_text) in enumerate(sig_brackets):
+                    y_brk = base_y + level * step
+                    mid_x = (1.0 + x2) / 2.0
+                    lines += [
+                        f"\\draw[thin] (axis cs:1,{y_brk:.4f})"
+                        f" -- (axis cs:{x2},{y_brk:.4f});",
+                        f"\\draw[thin] (axis cs:1,{y_brk:.4f})"
+                        f" -- (axis cs:1,{y_brk - tick_h:.4f});",
+                        f"\\draw[thin] (axis cs:{x2},{y_brk:.4f})"
+                        f" -- (axis cs:{x2},{y_brk - tick_h:.4f});",
+                        f"\\node[above, font=\\tiny, inner sep=0pt]"
+                        f" at (axis cs:{mid_x:.2f},{y_brk:.4f}) {{${sig_text}$}};",
+                    ]
 
             lines += [r"\end{axis}", ""]
 
