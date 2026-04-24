@@ -19,7 +19,10 @@ import pandas as pd
 
 # ── Config ────────────────────────────────────────────────────────────────────
 DATA_PATH = r"D:\work\figure_table\figure2\classify_with_PSNR\classify_with_PSNR.parquet"
-OUT_PATH  = r"D:\work\figure_table\figure2\classify_with_PSNR\psnr_boxplots.tex"
+OUT_PATHS = [
+    r"D:\work\figure_table\figure2\classify_with_PSNR\Draw fig1.1.2.tex",
+    r"C:\Users\冰糖雪梨\PycharmProjects\PythonProject\Draw fig1.1.2.tex",
+]
 
 TARGET_MODELS = ['Ours', 'ResShift', 'SD-v1.5', 'MDA-Net', 'GFE-Net']
 SCOPE_ORDER   = ['PSNR<20', '(20, 30)', '(30, 40)', '(40, 40+)']
@@ -223,8 +226,8 @@ ln(
 
 # ── Write output ──────────────────────────────────────────────────────────────
 output = '\n'.join(L)
-with open(OUT_PATH, 'w', encoding='utf-8') as fh:
-    fh.write(output)
-
-print(f'Written: {OUT_PATH}')
+for path in OUT_PATHS:
+    with open(path, 'w', encoding='utf-8') as fh:
+        fh.write(output)
+    print(f'Written: {path}')
 print(f'Lines:   {len(L)}')
