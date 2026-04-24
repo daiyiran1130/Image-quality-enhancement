@@ -375,7 +375,7 @@ def generate_tex(data, show_connections: bool) -> str:
         lines += [
             f"\\node[anchor=north west, font=\\footnotesize, text=gray!80!black]"
             f" at (0cm,{note_y:.2f}cm) {{",
-            r"  $^{***}$\,$p<0.001$ vs.\ Ours：所有标注比较均达到此显著性水平，图中不逐一标注。",
+            r"  $^{***}$\,$p<0.001$ vs.\ Ours: all comparisons reach this significance level and are not individually annotated.",
             "};",
             "",
         ]
