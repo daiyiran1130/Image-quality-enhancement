@@ -1,0 +1,840 @@
+% Auto-generated -- edit draw_psnr_boxplots.py to regenerate
+\documentclass[tikz,border=8pt]{standalone}
+\usepackage{pgfplots}
+\usepgflibrary{patterns}
+\usetikzlibrary{patterns,pgfplots.groupplots,calc}
+\pgfplotsset{compat=newest}
+
+%% Colour palette (same as the main figure)
+\definecolor{myblue}  {HTML}{2471A3}
+\definecolor{myred}   {HTML}{C0392B}
+\definecolor{mygreen} {HTML}{1E8449}
+\definecolor{mygray}  {HTML}{7F8C8D}
+\definecolor{myorange}{HTML}{D35400}
+
+\begin{document}
+\begin{tikzpicture}
+
+\begin{groupplot}[
+    group style={
+        group size=2 by 2,
+        horizontal sep=1.9cm,
+        vertical sep=2.1cm,
+    },
+    width=7.0cm, height=5.4cm,
+    boxplot/draw direction=y,
+    boxplot={
+        box extend=0.12,
+        whisker extend=0,
+        average=none,
+    },
+    xtick={0,1,2,3},
+    xticklabels={$<$20,20--30,30--40,$>$40},
+    xmin=-0.55, xmax=3.55,
+    tick label style={font=\scriptsize},
+    label style={font=\scriptsize},
+    title style={font=\small\bfseries},
+    xlabel style={font=\scriptsize},
+    ylabel style={font=\scriptsize},
+    ymajorgrids=true,
+    grid style={line width=0.3pt, color=black!12},
+]
+
+\nextgroupplot[
+    title={PSNR},
+    ylabel={PSNR (dB)},
+    ymin=25.50, ymax=47.00,
+    legend to name=boxlegend,
+    legend style={
+        legend columns=5,
+        column sep=6pt,
+        /tikz/every odd column/.style={column sep=0pt},
+        font=\scriptsize,
+        draw=black!25,
+        rounded corners=2pt,
+        fill=white,
+        inner sep=3pt,
+    },
+]
+\addlegendimage{fill=myblue, draw=myblue!70!black, area legend, line width=0.7pt}
+\addlegendentry{Ours (Diffusion)}
+\addlegendimage{fill=myblue!58!white, draw=myblue!80!black, area legend, line width=0.7pt}
+\addlegendentry{ResShift (Diffusion)}
+\addlegendimage{fill=myblue!28!white, draw=myblue!70!black, area legend, line width=0.7pt}
+\addlegendentry{SD-v1.5 (Diffusion)}
+\addlegendimage{fill=myred, draw=myred!70!black, area legend, line width=0.7pt}
+\addlegendentry{MDA-Net (GAN)}
+\addlegendimage{fill=mygreen, draw=mygreen!70!black, area legend, line width=0.7pt}
+\addlegendentry{GFE-Net (Trans.)}
+
+\addplot[
+    boxplot prepared={
+        lower whisker=34.121, lower quartile=34.121,
+        median=34.398,
+        upper quartile=34.673, upper whisker=34.673,
+        draw position=-0.300, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=30.840, lower quartile=30.840,
+        median=31.060,
+        upper quartile=31.273, upper whisker=31.273,
+        draw position=-0.150, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=26.928, lower quartile=26.928,
+        median=27.158,
+        upper quartile=27.386, upper whisker=27.386,
+        draw position=0.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=31.132, lower quartile=31.132,
+        median=31.344,
+        upper quartile=31.560, upper whisker=31.560,
+        draw position=0.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=30.037, lower quartile=30.037,
+        median=30.232,
+        upper quartile=30.418, upper whisker=30.418,
+        draw position=0.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=40.137, lower quartile=40.137,
+        median=40.281,
+        upper quartile=40.419, upper whisker=40.419,
+        draw position=0.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=34.055, lower quartile=34.055,
+        median=34.151,
+        upper quartile=34.239, upper whisker=34.239,
+        draw position=0.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=29.510, lower quartile=29.510,
+        median=29.641,
+        upper quartile=29.764, upper whisker=29.764,
+        draw position=1.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=35.081, lower quartile=35.081,
+        median=35.181,
+        upper quartile=35.273, upper whisker=35.273,
+        draw position=1.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=31.851, lower quartile=31.851,
+        median=31.945,
+        upper quartile=32.042, upper whisker=32.042,
+        draw position=1.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=42.200, lower quartile=42.200,
+        median=42.422,
+        upper quartile=42.642, upper whisker=42.642,
+        draw position=1.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=35.344, lower quartile=35.344,
+        median=35.458,
+        upper quartile=35.577, upper whisker=35.577,
+        draw position=1.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=30.036, lower quartile=30.036,
+        median=30.239,
+        upper quartile=30.447, upper whisker=30.447,
+        draw position=2.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=36.695, lower quartile=36.695,
+        median=36.830,
+        upper quartile=36.966, upper whisker=36.966,
+        draw position=2.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=32.674, lower quartile=32.674,
+        median=32.840,
+        upper quartile=33.003, upper whisker=33.003,
+        draw position=2.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=45.417, lower quartile=45.417,
+        median=45.561,
+        upper quartile=45.678, upper whisker=45.678,
+        draw position=2.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=35.972, lower quartile=35.972,
+        median=36.099,
+        upper quartile=36.224, upper whisker=36.224,
+        draw position=2.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=30.291, lower quartile=30.291,
+        median=30.581,
+        upper quartile=30.803, upper whisker=30.803,
+        draw position=3.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=37.883, lower quartile=37.883,
+        median=38.019,
+        upper quartile=38.145, upper whisker=38.145,
+        draw position=3.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=32.915, lower quartile=32.915,
+        median=33.111,
+        upper quartile=33.302, upper whisker=33.302,
+        draw position=3.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+
+\nextgroupplot[
+    title={LPIPS},
+    ylabel={LPIPS},
+    ymin=0.01, ymax=0.22,
+]
+\addplot[
+    boxplot prepared={
+        lower whisker=0.041, lower quartile=0.041,
+        median=0.043,
+        upper quartile=0.045, upper whisker=0.045,
+        draw position=-0.300, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.161, lower quartile=0.161,
+        median=0.163,
+        upper quartile=0.165, upper whisker=0.165,
+        draw position=-0.150, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.195, lower quartile=0.195,
+        median=0.196,
+        upper quartile=0.198, upper whisker=0.198,
+        draw position=0.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.154, lower quartile=0.154,
+        median=0.156,
+        upper quartile=0.158, upper whisker=0.158,
+        draw position=0.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.086, lower quartile=0.086,
+        median=0.088,
+        upper quartile=0.091, upper whisker=0.091,
+        draw position=0.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=0.032, lower quartile=0.032,
+        median=0.033,
+        upper quartile=0.034, upper whisker=0.034,
+        draw position=0.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.161, lower quartile=0.161,
+        median=0.161,
+        upper quartile=0.162, upper whisker=0.162,
+        draw position=0.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.193, lower quartile=0.193,
+        median=0.194,
+        upper quartile=0.194, upper whisker=0.194,
+        draw position=1.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.136, lower quartile=0.136,
+        median=0.137,
+        upper quartile=0.138, upper whisker=0.138,
+        draw position=1.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.080, lower quartile=0.080,
+        median=0.082,
+        upper quartile=0.083, upper whisker=0.083,
+        draw position=1.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=0.028, lower quartile=0.028,
+        median=0.029,
+        upper quartile=0.031, upper whisker=0.031,
+        draw position=1.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.159, lower quartile=0.159,
+        median=0.161,
+        upper quartile=0.162, upper whisker=0.162,
+        draw position=1.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.189, lower quartile=0.189,
+        median=0.191,
+        upper quartile=0.192, upper whisker=0.192,
+        draw position=2.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.128, lower quartile=0.128,
+        median=0.129,
+        upper quartile=0.131, upper whisker=0.131,
+        draw position=2.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.077, lower quartile=0.077,
+        median=0.080,
+        upper quartile=0.083, upper whisker=0.083,
+        draw position=2.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=0.017, lower quartile=0.017,
+        median=0.017,
+        upper quartile=0.018, upper whisker=0.018,
+        draw position=2.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.156, lower quartile=0.156,
+        median=0.158,
+        upper quartile=0.159, upper whisker=0.159,
+        draw position=2.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.184, lower quartile=0.184,
+        median=0.186,
+        upper quartile=0.187, upper whisker=0.187,
+        draw position=3.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.116, lower quartile=0.116,
+        median=0.118,
+        upper quartile=0.119, upper whisker=0.119,
+        draw position=3.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.057, lower quartile=0.057,
+        median=0.059,
+        upper quartile=0.060, upper whisker=0.060,
+        draw position=3.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+
+\nextgroupplot[
+    title={VIF},
+    ylabel={VIF},
+    ymin=0.44, ymax=0.95,
+    xlabel={Input PSNR (dB)},
+]
+\addplot[
+    boxplot prepared={
+        lower whisker=0.862, lower quartile=0.862,
+        median=0.866,
+        upper quartile=0.871, upper whisker=0.871,
+        draw position=-0.300, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.623, lower quartile=0.623,
+        median=0.626,
+        upper quartile=0.630, upper whisker=0.630,
+        draw position=-0.150, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.500, lower quartile=0.500,
+        median=0.503,
+        upper quartile=0.507, upper whisker=0.507,
+        draw position=0.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.644, lower quartile=0.644,
+        median=0.648,
+        upper quartile=0.652, upper whisker=0.652,
+        draw position=0.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.787, lower quartile=0.787,
+        median=0.792,
+        upper quartile=0.797, upper whisker=0.797,
+        draw position=0.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=0.863, lower quartile=0.863,
+        median=0.866,
+        upper quartile=0.868, upper whisker=0.868,
+        draw position=0.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.621, lower quartile=0.621,
+        median=0.622,
+        upper quartile=0.624, upper whisker=0.624,
+        draw position=0.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.503, lower quartile=0.503,
+        median=0.505,
+        upper quartile=0.507, upper whisker=0.507,
+        draw position=1.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.669, lower quartile=0.669,
+        median=0.671,
+        upper quartile=0.673, upper whisker=0.673,
+        draw position=1.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.784, lower quartile=0.784,
+        median=0.787,
+        upper quartile=0.790, upper whisker=0.790,
+        draw position=1.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=0.870, lower quartile=0.870,
+        median=0.874,
+        upper quartile=0.878, upper whisker=0.878,
+        draw position=1.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.625, lower quartile=0.625,
+        median=0.628,
+        upper quartile=0.631, upper whisker=0.631,
+        draw position=1.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.513, lower quartile=0.513,
+        median=0.516,
+        upper quartile=0.520, upper whisker=0.520,
+        draw position=2.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.685, lower quartile=0.685,
+        median=0.688,
+        upper quartile=0.692, upper whisker=0.692,
+        draw position=2.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.796, lower quartile=0.796,
+        median=0.801,
+        upper quartile=0.805, upper whisker=0.805,
+        draw position=2.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=0.905, lower quartile=0.905,
+        median=0.907,
+        upper quartile=0.909, upper whisker=0.909,
+        draw position=2.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.639, lower quartile=0.639,
+        median=0.641,
+        upper quartile=0.644, upper whisker=0.644,
+        draw position=2.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.528, lower quartile=0.528,
+        median=0.531,
+        upper quartile=0.535, upper whisker=0.535,
+        draw position=3.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.710, lower quartile=0.710,
+        median=0.713,
+        upper quartile=0.717, upper whisker=0.717,
+        draw position=3.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=0.842, lower quartile=0.842,
+        median=0.845,
+        upper quartile=0.848, upper whisker=0.848,
+        draw position=3.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+
+\nextgroupplot[
+    title={Haralick},
+    ylabel={Haralick},
+    ymin=0.10, ymax=5.20,
+    xlabel={Input PSNR (dB)},
+]
+\addplot[
+    boxplot prepared={
+        lower whisker=0.930, lower quartile=0.930,
+        median=0.986,
+        upper quartile=1.047, upper whisker=1.047,
+        draw position=-0.300, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=1.830, lower quartile=1.830,
+        median=1.924,
+        upper quartile=2.023, upper whisker=2.023,
+        draw position=-0.150, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=2.979, lower quartile=2.979,
+        median=3.118,
+        upper quartile=3.264, upper whisker=3.264,
+        draw position=0.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=4.381, lower quartile=4.381,
+        median=4.568,
+        upper quartile=4.752, upper whisker=4.752,
+        draw position=0.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=2.475, lower quartile=2.475,
+        median=2.612,
+        upper quartile=2.746, upper whisker=2.746,
+        draw position=0.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=0.623, lower quartile=0.623,
+        median=0.648,
+        upper quartile=0.672, upper whisker=0.672,
+        draw position=0.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=1.628, lower quartile=1.628,
+        median=1.662,
+        upper quartile=1.698, upper whisker=1.698,
+        draw position=0.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=2.927, lower quartile=2.927,
+        median=3.001,
+        upper quartile=3.076, upper whisker=3.076,
+        draw position=1.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=2.942, lower quartile=2.942,
+        median=3.008,
+        upper quartile=3.070, upper whisker=3.070,
+        draw position=1.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=1.825, lower quartile=1.825,
+        median=1.872,
+        upper quartile=1.920, upper whisker=1.920,
+        draw position=1.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=0.513, lower quartile=0.513,
+        median=0.551,
+        upper quartile=0.591, upper whisker=0.591,
+        draw position=1.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=1.421, lower quartile=1.421,
+        median=1.473,
+        upper quartile=1.526, upper whisker=1.526,
+        draw position=1.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=2.653, lower quartile=2.653,
+        median=2.770,
+        upper quartile=2.894, upper whisker=2.894,
+        draw position=2.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=2.498, lower quartile=2.498,
+        median=2.590,
+        upper quartile=2.680, upper whisker=2.680,
+        draw position=2.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=1.560, lower quartile=1.560,
+        median=1.628,
+        upper quartile=1.698, upper whisker=1.698,
+        draw position=2.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+\addplot[
+    boxplot prepared={
+        lower whisker=0.261, lower quartile=0.261,
+        median=0.275,
+        upper quartile=0.289, upper whisker=0.289,
+        draw position=2.700, box extend=0.12,
+    },
+    fill=myblue, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=1.388, lower quartile=1.388,
+        median=1.438,
+        upper quartile=1.495, upper whisker=1.495,
+        draw position=2.850, box extend=0.12,
+    },
+    fill=myblue!58!white, draw=myblue!80!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=2.631, lower quartile=2.631,
+        median=2.760,
+        upper quartile=2.893, upper whisker=2.893,
+        draw position=3.000, box extend=0.12,
+    },
+    fill=myblue!28!white, draw=myblue!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=2.395, lower quartile=2.395,
+        median=2.512,
+        upper quartile=2.625, upper whisker=2.625,
+        draw position=3.150, box extend=0.12,
+    },
+    fill=myred, draw=myred!70!black, line width=0.7pt,
+] coordinates {};
+\addplot[
+    boxplot prepared={
+        lower whisker=1.371, lower quartile=1.371,
+        median=1.435,
+        upper quartile=1.504, upper whisker=1.504,
+        draw position=3.300, box extend=0.12,
+    },
+    fill=mygreen, draw=mygreen!70!black, line width=0.7pt,
+] coordinates {};
+
+
+\end{groupplot}
+
+\node[anchor=north, inner sep=0pt] at
+    ($(current bounding box.south)+(0,-0.45cm)$)
+    {\pgfplotslegendfromname{boxlegend}};
+
+\node[anchor=north, font=\scriptsize, text=black!65,
+      text width=14cm, align=center] at
+    ($(current bounding box.south)+(0,-1.20cm)$)
+    {All pairwise comparisons vs.\ \textbf{Ours} are significant at
+     $p < 0.001$ ($^{***}$, Wilcoxon signed-rank test).};
+
+\end{tikzpicture}
+\end{document}
