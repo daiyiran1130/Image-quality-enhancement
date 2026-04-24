@@ -196,7 +196,7 @@ def yrange(data: dict, scope: str, metric: str, models: list[str],
     if not vals_hi:
         return 0.0, 1.0
     if use_log:
-        return 0.3, max(vals_hi) * 3.5
+        return 0.3, max(vals_hi) * (3.5 * (1.5 ** n_brackets) if n_brackets else 3.5)
     span = max(vals_hi) - min(vals_lo)
     ymin = max(0.0, min(vals_lo) - span * 0.04)
     ymax = max(vals_hi) + span * (0.22 + 0.14 * n_brackets)
@@ -231,11 +231,18 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
     colours = [model_colour(m) for m in models]
     display = [MODEL_DISPLAY.get(m, m) for m in models]
 
+    # Pre-scan: any *** significance across all subplots?
+    has_triple_star_any = any(
+        data.get((sc, m, me), {}).get("sig", "") == "***"
+        for sc in PSNR_SCOPES for me in METRICS
+        for m in models if m != "Ours"
+    )
+
     # Bounding box
     total_w = len(PSNR_SCOPES) * SUBPLOT_W + (len(PSNR_SCOPES) - 1) * GAP_X
     total_h = (len(METRICS) - 1) * (SUBPLOT_H + GAP_Y) + SUBPLOT_H
     bb_left, bb_top    = -3.0,  2.0
-    bb_right, bb_bottom = total_w + 0.5, -(total_h + 2.5)
+    bb_right, bb_bottom = total_w + 0.5, -(total_h + 2.5 + (1.0 if has_triple_star_any else 0.0))
 
     lines = [make_preamble()]
     lines.append(r"\begin{tikzpicture}[font=\small]")
@@ -253,13 +260,13 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
             ax_y = -row * (SUBPLOT_H + GAP_Y)
             axname = f"ax{row}{col}"
 
-            # Pre-compute significance brackets for ymax headroom
+            # Pre-compute significance brackets (*** omitted; shown in figure note)
             sig_brackets = []
             for _mi, _m in enumerate(models):
                 if _m == "Ours":
                     continue
                 _d = data.get((scope, _m, metric))
-                if _d and _d["sig"] and _d["sig"] not in ("nan", ""):
+                if _d and _d["sig"] and _d["sig"] not in ("nan", "", "***"):
                     sig_brackets.append((_mi + 1, _d["sig"]))
             sig_brackets.sort(key=lambda t: t[0])
 
@@ -353,29 +360,48 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
                         f" at (axis cs:{x},{d['val']:.4f});"
                     )
 
-            # ── bracket-style significance markers ────────────────────────────
-            if sig_brackets and not use_log:
+            # ── bracket-style significance markers (only * and **) ───────────
+            if sig_brackets:
                 all_hi_raw = [data[(scope, m, metric)]["hi"]
                               for m in models if (scope, m, metric) in data]
                 all_lo_raw = [data[(scope, m, metric)]["lo"]
                               for m in models if (scope, m, metric) in data]
-                raw_span = max(all_hi_raw) - min(all_lo_raw)
-                base_y = max(all_hi_raw) + raw_span * 0.08
-                step   = raw_span * 0.14
-                tick_h = raw_span * 0.03
-                for level, (x2, sig_text) in enumerate(sig_brackets):
-                    y_brk = base_y + level * step
-                    mid_x = (1.0 + x2) / 2.0
-                    lines += [
-                        f"\\draw[thin] (axis cs:1,{y_brk:.4f})"
-                        f" -- (axis cs:{x2},{y_brk:.4f});",
-                        f"\\draw[thin] (axis cs:1,{y_brk:.4f})"
-                        f" -- (axis cs:1,{y_brk - tick_h:.4f});",
-                        f"\\draw[thin] (axis cs:{x2},{y_brk:.4f})"
-                        f" -- (axis cs:{x2},{y_brk - tick_h:.4f});",
-                        f"\\node[above, font=\\tiny, inner sep=0pt]"
-                        f" at (axis cs:{mid_x:.2f},{y_brk:.4f}) {{${sig_text}$}};",
-                    ]
+                if use_log:
+                    max_hi = max(all_hi_raw)
+                    base_y = max_hi * 1.5
+                    step_f = 1.5
+                    tick_r = 0.87
+                    for level, (x2, sig_text) in enumerate(sig_brackets):
+                        y_brk = base_y * (step_f ** level)
+                        mid_x = (1.0 + x2) / 2.0
+                        lines += [
+                            f"\\draw[thin] (axis cs:1,{y_brk:.4f})"
+                            f" -- (axis cs:{x2},{y_brk:.4f});",
+                            f"\\draw[thin] (axis cs:1,{y_brk:.4f})"
+                            f" -- (axis cs:1,{y_brk * tick_r:.4f});",
+                            f"\\draw[thin] (axis cs:{x2},{y_brk:.4f})"
+                            f" -- (axis cs:{x2},{y_brk * tick_r:.4f});",
+                            f"\\node[above, font=\\tiny, inner sep=0pt]"
+                            f" at (axis cs:{mid_x:.2f},{y_brk:.4f}) {{${sig_text}$}};",
+                        ]
+                else:
+                    raw_span = max(all_hi_raw) - min(all_lo_raw)
+                    base_y = max(all_hi_raw) + raw_span * 0.08
+                    step   = raw_span * 0.14
+                    tick_h = raw_span * 0.03
+                    for level, (x2, sig_text) in enumerate(sig_brackets):
+                        y_brk = base_y + level * step
+                        mid_x = (1.0 + x2) / 2.0
+                        lines += [
+                            f"\\draw[thin] (axis cs:1,{y_brk:.4f})"
+                            f" -- (axis cs:{x2},{y_brk:.4f});",
+                            f"\\draw[thin] (axis cs:1,{y_brk:.4f})"
+                            f" -- (axis cs:1,{y_brk - tick_h:.4f});",
+                            f"\\draw[thin] (axis cs:{x2},{y_brk:.4f})"
+                            f" -- (axis cs:{x2},{y_brk - tick_h:.4f});",
+                            f"\\node[above, font=\\tiny, inner sep=0pt]"
+                            f" at (axis cs:{mid_x:.2f},{y_brk:.4f}) {{${sig_text}$}};",
+                        ]
 
             lines += [r"\end{axis}", ""]
 
@@ -413,6 +439,17 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
         "};",
         "",
     ]
+
+    if has_triple_star_any:
+        note_y = legend_y - 0.75
+        lines += [
+            f"\\node[anchor=north west, font=\\footnotesize, text=gray!80!black]"
+            f" at (0cm,{note_y:.2f}cm) {{",
+            r"  $^{***}$\,$p<0.001$ vs.\ Ours: all annotated comparisons reach"
+            r" this significance level and are not individually marked.",
+            "};",
+            "",
+        ]
 
     lines += [r"\end{tikzpicture}", "", r"\end{document}"]
     return "\n".join(lines)

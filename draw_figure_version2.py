@@ -240,11 +240,18 @@ def generate_tex(scope_data: dict, sig: dict, models: list[str]) -> str:
             if k in scope_data:
                 stats[k] = box_stats(scope_data[k]["scope_vals"])
 
+    # Pre-scan: any *** significance?
+    has_triple_star_any = any(
+        sig.get((m, me), "") == "***"
+        for me in METRICS for m in models if m != "Ours"
+    )
+
     # Bounding box for standalone
     total_w = GRID_COLS * SUBPLOT_W + (GRID_COLS - 1) * GAP_X
     total_h = (n_rows - 1) * (SUBPLOT_H + GAP_Y) + SUBPLOT_H
+    extra_bottom = 1.0 if has_triple_star_any else 0.0
     bb = (f"\\useasboundingbox (-3.0cm,1.8cm)"
-          f" rectangle ({total_w + 0.5:.1f}cm,{-(total_h + 2.5):.1f}cm);")
+          f" rectangle ({total_w + 0.5:.1f}cm,{-(total_h + 2.5 + extra_bottom):.1f}cm);")
 
     lines = [PREAMBLE, r"\begin{tikzpicture}[font=\small]", bb, ""]
 
@@ -263,13 +270,13 @@ def generate_tex(scope_data: dict, sig: dict, models: list[str]) -> str:
         span = max(all_uw) - min(all_lw)
         ymin = max(0.0, min(all_lw) - span * 0.06)
 
-        # Pre-compute significance brackets for ymax headroom
+        # Pre-compute significance brackets (*** omitted; shown in figure note)
         sig_brackets = []
         for _mi, _m in enumerate(models):
             if _m == "Ours":
                 continue
             _p = sig.get((_m, metric), "")
-            if _p and _p not in ("nan", ""):
+            if _p and _p not in ("nan", "", "***"):
                 sig_brackets.append((_mi + 1, _p))
         sig_brackets.sort(key=lambda t: t[0])
 
@@ -369,10 +376,20 @@ def generate_tex(scope_data: dict, sig: dict, models: list[str]) -> str:
         "  " + r"\quad ".join(parts),
         "};",
         "",
-        r"\end{tikzpicture}",
-        "",
-        r"\end{document}",
     ]
+
+    if has_triple_star_any:
+        note_y = legend_y - 0.75
+        lines += [
+            f"\\node[anchor=north west, font=\\footnotesize, text=gray!80!black]"
+            f" at (0cm,{note_y:.2f}cm) {{",
+            r"  $^{***}$\,$p<0.001$ vs.\ Ours: all annotated comparisons reach"
+            r" this significance level and are not individually marked.",
+            "};",
+            "",
+        ]
+
+    lines += [r"\end{tikzpicture}", "", r"\end{document}"]
     return "\n".join(lines)
 
 # ══════════════════════════════════════════════════════════════════════════════

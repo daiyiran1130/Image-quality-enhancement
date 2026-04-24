@@ -17,7 +17,7 @@
 
 \begin{document}
 \begin{tikzpicture}[font=\small]
-\useasboundingbox (-3.0cm,1.8cm) rectangle (18.3cm,-17.7cm);
+\useasboundingbox (-3.0cm,1.8cm) rectangle (18.3cm,-18.7cm);
 
 % ── PSNR (row=0, col=0) ─────────────────────────────
 \begin{axis}[
@@ -31,7 +31,7 @@
   xtick={1,...,5},
   xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
   xticklabel style={rotate=25, anchor=east, font=\small},
-  ymin=26.0535, ymax=60.6512,
+  ymin=26.0535, ymax=47.4010,
   ylabel={PSNR ($\uparrow$)},
   ylabel style={font=\footnotesize},
   ymajorgrids=true,
@@ -111,22 +111,6 @@
   boxplot/every average/.style={mark=diamond*, mark size=2.5pt, fill=mygreen, draw=mygreen!70!black},
 ] coordinates {};
 
-\draw[thin] (axis cs:1,46.6649) -- (axis cs:2,46.6649);
-\draw[thin] (axis cs:1,46.6649) -- (axis cs:1,45.9288);
-\draw[thin] (axis cs:2,46.6649) -- (axis cs:2,45.9288);
-\node[above, font=\small, inner sep=0pt] at (axis cs:1.50,46.6649) {$***$};
-\draw[thin] (axis cs:1,49.7934) -- (axis cs:3,49.7934);
-\draw[thin] (axis cs:1,49.7934) -- (axis cs:1,49.0573);
-\draw[thin] (axis cs:3,49.7934) -- (axis cs:3,49.0573);
-\node[above, font=\small, inner sep=0pt] at (axis cs:2.00,49.7934) {$***$};
-\draw[thin] (axis cs:1,52.9219) -- (axis cs:4,52.9219);
-\draw[thin] (axis cs:1,52.9219) -- (axis cs:1,52.1858);
-\draw[thin] (axis cs:4,52.9219) -- (axis cs:4,52.1858);
-\node[above, font=\small, inner sep=0pt] at (axis cs:2.50,52.9219) {$***$};
-\draw[thin] (axis cs:1,56.0504) -- (axis cs:5,56.0504);
-\draw[thin] (axis cs:1,56.0504) -- (axis cs:1,55.3143);
-\draw[thin] (axis cs:5,56.0504) -- (axis cs:5,55.3143);
-\node[above, font=\small, inner sep=0pt] at (axis cs:3.00,56.0504) {$***$};
 \end{axis}
 
 % ── LPIPS (row=0, col=1) ─────────────────────────────
@@ -141,7 +125,7 @@
   xtick={1,...,5},
   xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
   xticklabel style={rotate=25, anchor=east, font=\small},
-  ymin=0.0066, ymax=0.3433,
+  ymin=0.0066, ymax=0.2143,
   ylabel={LPIPS ($\downarrow$)},
   ylabel style={font=\footnotesize},
   ymajorgrids=true,
@@ -221,22 +205,6 @@
   boxplot/every average/.style={mark=diamond*, mark size=2.5pt, fill=mygreen, draw=mygreen!70!black},
 ] coordinates {};
 
-\draw[thin] (axis cs:1,0.2071) -- (axis cs:2,0.2071);
-\draw[thin] (axis cs:1,0.2071) -- (axis cs:1,0.2000);
-\draw[thin] (axis cs:2,0.2071) -- (axis cs:2,0.2000);
-\node[above, font=\small, inner sep=0pt] at (axis cs:1.50,0.2071) {$***$};
-\draw[thin] (axis cs:1,0.2376) -- (axis cs:3,0.2376);
-\draw[thin] (axis cs:1,0.2376) -- (axis cs:1,0.2304);
-\draw[thin] (axis cs:3,0.2376) -- (axis cs:3,0.2304);
-\node[above, font=\small, inner sep=0pt] at (axis cs:2.00,0.2376) {$***$};
-\draw[thin] (axis cs:1,0.2680) -- (axis cs:4,0.2680);
-\draw[thin] (axis cs:1,0.2680) -- (axis cs:1,0.2609);
-\draw[thin] (axis cs:4,0.2680) -- (axis cs:4,0.2609);
-\node[above, font=\small, inner sep=0pt] at (axis cs:2.50,0.2680) {$***$};
-\draw[thin] (axis cs:1,0.2985) -- (axis cs:5,0.2985);
-\draw[thin] (axis cs:1,0.2985) -- (axis cs:1,0.2913);
-\draw[thin] (axis cs:5,0.2985) -- (axis cs:5,0.2913);
-\node[above, font=\small, inner sep=0pt] at (axis cs:3.00,0.2985) {$***$};
 \end{axis}
 
 % ── VIF (row=1, col=0) ─────────────────────────────
@@ -251,7 +219,7 @@
   xtick={1,...,5},
   xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
   xticklabel style={rotate=25, anchor=east, font=\small},
-  ymin=0.4790, ymax=1.2359,
+  ymin=0.4790, ymax=0.9460,
   ylabel={VIF ($\uparrow$)},
   ylabel style={font=\footnotesize},
   ymajorgrids=true,
@@ -331,22 +299,6 @@
   boxplot/every average/.style={mark=diamond*, mark size=2.5pt, fill=mygreen, draw=mygreen!70!black},
 ] coordinates {};
 
-\draw[thin] (axis cs:1,0.9299) -- (axis cs:2,0.9299);
-\draw[thin] (axis cs:1,0.9299) -- (axis cs:1,0.9138);
-\draw[thin] (axis cs:2,0.9299) -- (axis cs:2,0.9138);
-\node[above, font=\small, inner sep=0pt] at (axis cs:1.50,0.9299) {$***$};
-\draw[thin] (axis cs:1,0.9984) -- (axis cs:3,0.9984);
-\draw[thin] (axis cs:1,0.9984) -- (axis cs:1,0.9823);
-\draw[thin] (axis cs:3,0.9984) -- (axis cs:3,0.9823);
-\node[above, font=\small, inner sep=0pt] at (axis cs:2.00,0.9984) {$***$};
-\draw[thin] (axis cs:1,1.0668) -- (axis cs:4,1.0668);
-\draw[thin] (axis cs:1,1.0668) -- (axis cs:1,1.0507);
-\draw[thin] (axis cs:4,1.0668) -- (axis cs:4,1.0507);
-\node[above, font=\small, inner sep=0pt] at (axis cs:2.50,1.0668) {$***$};
-\draw[thin] (axis cs:1,1.1352) -- (axis cs:5,1.1352);
-\draw[thin] (axis cs:1,1.1352) -- (axis cs:1,1.1191);
-\draw[thin] (axis cs:5,1.1352) -- (axis cs:5,1.1191);
-\node[above, font=\small, inner sep=0pt] at (axis cs:3.00,1.1352) {$***$};
 \end{axis}
 
 % ── HARALICK (row=1, col=1) ─────────────────────────────
@@ -361,7 +313,7 @@
   xtick={1,...,5},
   xticklabels={{\textbf{Ours}},{SD-v1.5},{MDA-Net},{ResShift},{GFE-Net}},
   xticklabel style={rotate=25, anchor=east, font=\small},
-  ymin=0.0172, ymax=8.0881,
+  ymin=0.0172, ymax=4.9971,
   ylabel={HARALICK ($\downarrow$)},
   ylabel style={font=\footnotesize},
   ymajorgrids=true,
@@ -441,26 +393,14 @@
   boxplot/every average/.style={mark=diamond*, mark size=2.5pt, fill=mygreen, draw=mygreen!70!black},
 ] coordinates {};
 
-\draw[thin] (axis cs:1,4.8254) -- (axis cs:2,4.8254);
-\draw[thin] (axis cs:1,4.8254) -- (axis cs:1,4.6537);
-\draw[thin] (axis cs:2,4.8254) -- (axis cs:2,4.6537);
-\node[above, font=\small, inner sep=0pt] at (axis cs:1.50,4.8254) {$***$};
-\draw[thin] (axis cs:1,5.5552) -- (axis cs:3,5.5552);
-\draw[thin] (axis cs:1,5.5552) -- (axis cs:1,5.3835);
-\draw[thin] (axis cs:3,5.5552) -- (axis cs:3,5.3835);
-\node[above, font=\small, inner sep=0pt] at (axis cs:2.00,5.5552) {$***$};
-\draw[thin] (axis cs:1,6.2850) -- (axis cs:4,6.2850);
-\draw[thin] (axis cs:1,6.2850) -- (axis cs:1,6.1133);
-\draw[thin] (axis cs:4,6.2850) -- (axis cs:4,6.1133);
-\node[above, font=\small, inner sep=0pt] at (axis cs:2.50,6.2850) {$***$};
-\draw[thin] (axis cs:1,7.0148) -- (axis cs:5,7.0148);
-\draw[thin] (axis cs:1,7.0148) -- (axis cs:1,6.8431);
-\draw[thin] (axis cs:5,7.0148) -- (axis cs:5,6.8431);
-\node[above, font=\small, inner sep=0pt] at (axis cs:3.00,7.0148) {$***$};
 \end{axis}
 
 \node[anchor=north west, font=\small] at (0cm,-16.10cm) {
   \tikz{\fill[myblue!50] (0,0) rectangle (0.35cm,0.22cm);}~\textbf{Ours}\quad \tikz{\fill[myblue!50] (0,0) rectangle (0.35cm,0.22cm);}~SD-v1.5\quad \tikz{\fill[myred!50] (0,0) rectangle (0.35cm,0.22cm);}~MDA-Net\quad \tikz{\fill[myblue!50] (0,0) rectangle (0.35cm,0.22cm);}~ResShift\quad \tikz{\fill[mygreen!50] (0,0) rectangle (0.35cm,0.22cm);}~GFE-Net
+};
+
+\node[anchor=north west, font=\footnotesize, text=gray!80!black] at (0cm,-16.85cm) {
+  $^{***}$\,$p<0.001$ vs.\ Ours: all annotated comparisons reach this significance level and are not individually marked.
 };
 
 \end{tikzpicture}
