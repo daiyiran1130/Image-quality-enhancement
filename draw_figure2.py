@@ -14,7 +14,7 @@ Usage
 
 If called with no arguments:
   - reads  LOCAL_PARQUET  (Windows local path)
-  - writes figure2_with_conn.tex  and  figure2_no_conn.tex
+  - writes  <stem>.tex  (连线由 SHOW_CONNECTIONS 开关控制)
 """
 
 import re
@@ -25,9 +25,7 @@ import pandas as pd
 # User-facing switches
 # ══════════════════════════════════════════════════════════════════════════════
 
-# Set to True / False to control which version is compiled.
-# When running from __main__ both versions are always written.
-SHOW_CONNECTIONS: bool = True
+SHOW_CONNECTIONS: bool = True   # ← 在这里改：True = 画连线，False = 不画
 
 LOCAL_PARQUET = r"D:\work\figure_table\figure2\classify_with_PSNR\classify_with_PSNR.parquet"
 
@@ -194,14 +192,20 @@ def fmt3(v):
 
 
 def generate_tex(data, show_connections: bool) -> str:
+    # 预扫描：是否存在 *** 显著性（用于图注和 bounding box）
+    has_triple_star_any = any(
+        data.get((sc, m, me), {}).get("sig", "") == "***"
+        for sc in PSNR_SCOPES for me in METRICS
+        for m in MODEL_ORDER
+    )
+
     # Compute bounding box dimensions
     total_w = len(PSNR_SCOPES) * SUBPLOT_W + (len(PSNR_SCOPES) - 1) * GAP_X
     total_h = len(METRICS) * SUBPLOT_H + (len(METRICS) - 1) * GAP_Y
-    # Extra: left margin for ylabel, top margin for titles, bottom for legend
     bb_left   = -3.0
     bb_top    = 2.0
     bb_right  = total_w + 0.5
-    bb_bottom = -(total_h + 2.5)
+    bb_bottom = -(total_h + 2.5 + (1.0 if has_triple_star_any else 0.0))
 
     lines = [PREAMBLE]
     lines.append(r"\begin{tikzpicture}[font=\small]")
@@ -310,8 +314,8 @@ def generate_tex(data, show_connections: bool) -> str:
                     continue
                 x = mi + 1
 
-                # Significance label above the upper CI bound
-                if d["sig"]:
+                # 显著性标注：只画 * 和 **，*** 统一在图注说明
+                if d["sig"] and d["sig"] not in ("nan", "", "***"):
                     if use_log:
                         sig_y = d["hi"] * 1.6
                     else:
@@ -366,6 +370,16 @@ def generate_tex(data, show_connections: bool) -> str:
         "",
     ]
 
+    if has_triple_star_any:
+        note_y = legend_y - 0.75
+        lines += [
+            f"\\node[anchor=north west, font=\\footnotesize, text=gray!80!black]"
+            f" at (0cm,{note_y:.2f}cm) {{",
+            r"  $^{***}$\,$p<0.001$ vs.\ Ours：所有标注比较均达到此显著性水平，图中不逐一标注。",
+            "};",
+            "",
+        ]
+
     lines += [r"\end{tikzpicture}", "", POSTAMBLE]
     return "\n".join(lines)
 
@@ -382,18 +396,12 @@ def main():
     data = load_data(parquet)
     print(f"Loaded {len(data)} data cells.")
 
-    for show_conn in [True, False]:
-        suffix = "with_conn" if show_conn else "no_conn"
-        out_path = f"{stem}_{suffix}.tex"
-        tex = generate_tex(data, show_conn)
-        with open(out_path, "w", encoding="utf-8") as fh:
-            fh.write(tex)
-        print(f"Written: {out_path}")
-
-    print()
-    print("Compile with:")
-    print(f"  pdflatex {stem}_with_conn.tex   # version with connection lines")
-    print(f"  pdflatex {stem}_no_conn.tex     # version without connection lines")
+    out_path = f"{stem}.tex"
+    tex = generate_tex(data, SHOW_CONNECTIONS)
+    with open(out_path, "w", encoding="utf-8") as fh:
+        fh.write(tex)
+    print(f"Written: {out_path}  (连线={'开' if SHOW_CONNECTIONS else '关'})")
+    print(f"\nCompile with:  pdflatex {out_path}")
 
 
 if __name__ == "__main__":
