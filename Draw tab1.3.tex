@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{geometry}
+\geometry{margin=1in, landscape}
+
+% \pstarmark{n}: 0=空, 1=*, 2=†, 3=‡
+\newcommand{\pstarmark}[1]{%
+  \ifnum#1=1 {*}\fi%
+  \ifnum#1=2 {\dag}\fi%
+  \ifnum#1=3 {\ddag}\fi%
+}
+
+% \statcell{value}{CI}{stars}{delta}
+\newcommand{\statcell}[4]{%
+  \begin{tabular}[t]{@{}c@{}}
+    $#1^{\,\pstarmark{#3}}_{\scriptstyle(#4)}$ \\[-3pt]
+    {\scriptsize $#2$}
+  \end{tabular}%
+}
+
+\begin{document}
+
+\begin{table}[htbp]
+\centering
+\caption{Ablation study of image enhancement components. $\ddag$: $p<0.001$ vs.\ Ours; $\uparrow$higher is better; $\downarrow$lower is better.}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{llcccc}
+  \toprule
+  Arch. & Model & PSNR\,$\uparrow$ & LPIPS\,$\downarrow$ & VIF\,$\uparrow$ & HARALICK\,$\downarrow$ \\
+  \midrule
+  \multirow{6}{*}{Ablation}
+    & Pre+SK &
+      \statcell{40.157}{40.056\text{--}40.255}{3}{-0.491} &
+      \statcell{0.051}{0.051\text{--}0.052}{3}{+0.020} &
+      \statcell{0.840}{0.839\text{--}0.842}{3}{-0.033} &
+      \statcell{0.820}{0.801\text{--}0.839}{3}{+0.198} \\
+    & Pre+CFG &
+      \statcell{36.615}{36.545\text{--}36.687}{3}{-4.033} &
+      \statcell{0.182}{0.182\text{--}0.183}{3}{+0.151} &
+      \statcell{0.614}{0.612\text{--}0.615}{3}{-0.259} &
+      \statcell{1.666}{1.644\text{--}1.690}{3}{+1.045} \\
+    & Pre+Seg &
+      \statcell{35.602}{35.535\text{--}35.675}{3}{-5.046} &
+      \statcell{0.121}{0.120\text{--}0.122}{3}{+0.090} &
+      \statcell{0.580}{0.578\text{--}0.581}{3}{-0.294} &
+      \statcell{1.270}{1.248\text{--}1.293}{3}{+0.648} \\
+    & Pre+CFG+Seg &
+      \statcell{36.377}{36.309\text{--}36.451}{3}{-4.271} &
+      \statcell{0.124}{0.123\text{--}0.125}{3}{+0.093} &
+      \statcell{0.598}{0.597\text{--}0.600}{3}{-0.275} &
+      \statcell{1.408}{1.385\text{--}1.431}{3}{+0.786} \\
+    & Pre+SK+CFG &
+      \statcell{40.710}{40.599\text{--}40.821}{1}{+0.061} &
+      \statcell{0.043}{0.042\text{--}0.044}{3}{+0.011} &
+      \statcell{0.868}{0.866\text{--}0.869}{3}{-0.006} &
+      \statcell{0.690}{0.672\text{--}0.709}{3}{+0.069} \\
+    & Pre+SK+Seg &
+      \statcell{39.480}{39.391\text{--}39.576}{3}{-1.168} &
+      \statcell{0.042}{0.041\text{--}0.042}{3}{+0.010} &
+      \statcell{0.832}{0.831\text{--}0.834}{3}{-0.041} &
+      \statcell{0.685}{0.667\text{--}0.703}{3}{+0.064} \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
