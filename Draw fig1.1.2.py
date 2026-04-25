@@ -46,12 +46,14 @@ MODEL_STYLE = {
                  'legend': 'GFE-Net (Trans.)'},
 }
 
-# Box geometry: 5 models × 0.20 spacing, total width 0.18
-# Constraint: 2*max_offset + 2*HALF < 1.0 (group spacing)
-# → 2*0.40 + 2*0.09 = 0.98 < 1.0  ✓  (0.02 gap between groups)
-# Within-group gap: step - 2*HALF = 0.20 - 0.18 = 0.02  ✓
-OFFSETS = [-0.40, -0.20, 0.00, 0.20, 0.40]
-HALF    = 0.09   # half box width → full width 0.18
+# Box geometry: 5 models × 0.20 spacing
+# Max HALF without overlap = 0.10 (touching); use 0.098 to keep hair-gap
+# 2*0.40 + 2*0.098 = 0.996 < 1.0  ✓ (inter-group gap 0.004)
+# step - 2*HALF  = 0.20 - 0.196 = 0.004 ✓ (within-group gap)
+OFFSETS   = [-0.40, -0.20, 0.00, 0.20, 0.40]
+HALF      = 0.098          # half box width → full width 0.196
+BOX_LW    = '1.0pt'        # box border line width
+MEAN_LW   = '1.8pt'        # mean line (thicker = more visible)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -105,7 +107,7 @@ ln(
     r'        horizontal sep=2.2cm,',
     r'        vertical sep=2.3cm,',
     r'    },',
-    r'    width=9.0cm, height=6.0cm,',
+    r'    width=12.0cm, height=7.0cm,',
     '    xtick={' + xtick_str + '},',
     '    xticklabels={' + xticklabels_str + '},',
     r'    xmin=-0.55, xmax=3.55,',
@@ -151,14 +153,14 @@ for m_idx, (metric, ylabel, title, ymin, ymax) in enumerate(METRICS):
             # CI range box
             ln(
                 r'\filldraw[fill=' + s['fill'] + ', draw=' + s['draw']
-                + r', line width=0.7pt]',
+                + ', line width=' + BOX_LW + ']',
                 '    (axis cs:' + f3(xl) + ',' + f3(ci_low) + ')'
                 + ' rectangle '
                 + '(axis cs:' + f3(xr) + ',' + f3(ci_high) + ');',
             )
             # Mean line
             ln(
-                r'\draw[' + s['draw'] + r', line width=1.2pt]',
+                r'\draw[' + s['draw'] + ', line width=' + MEAN_LW + ']',
                 '    (axis cs:' + f3(xl) + ',' + f3(mean_val)
                 + ') -- (axis cs:' + f3(xr) + ',' + f3(mean_val) + ');',
             )
