@@ -46,9 +46,12 @@ MODEL_STYLE = {
                  'legend': 'GFE-Net (Trans.)'},
 }
 
-# Box geometry: 5 models × 0.15 spacing, total width 0.12
-OFFSETS = [-0.30, -0.15, 0.00, 0.15, 0.30]
-HALF    = 0.06   # half box width
+# Box geometry: 5 models × 0.20 spacing, total width 0.18
+# Constraint: 2*max_offset + 2*HALF < 1.0 (group spacing)
+# → 2*0.40 + 2*0.09 = 0.98 < 1.0  ✓  (0.02 gap between groups)
+# Within-group gap: step - 2*HALF = 0.20 - 0.18 = 0.02  ✓
+OFFSETS = [-0.40, -0.20, 0.00, 0.20, 0.40]
+HALF    = 0.09   # half box width → full width 0.18
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -99,10 +102,10 @@ ln(
     r'\begin{groupplot}[',
     r'    group style={',
     r'        group size=2 by 2,',
-    r'        horizontal sep=1.9cm,',
-    r'        vertical sep=2.1cm,',
+    r'        horizontal sep=2.2cm,',
+    r'        vertical sep=2.3cm,',
     r'    },',
-    r'    width=7.0cm, height=5.4cm,',
+    r'    width=9.0cm, height=6.0cm,',
     '    xtick={' + xtick_str + '},',
     '    xticklabels={' + xticklabels_str + '},',
     r'    xmin=-0.55, xmax=3.55,',
