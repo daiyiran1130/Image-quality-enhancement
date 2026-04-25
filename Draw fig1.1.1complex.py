@@ -1,23 +1,16 @@
 #!/usr/bin/env python3
 """
-Draw fig1.2.1.many.complex.py — Generate LaTeX/pgfplots bar-chart figure for
-MULTI-degradation-type image quality metrics.
+draw_figure2.py — Generate LaTeX/pgfplots bar-chart figure for
+PSNR-classified image quality metrics.
 
-Multi degradation types (16, sorted by leading type):
-  blur+halo  | blur+hole  | blur+spot
-  color+blur | color+halo | color+hole | color+spot
-  halo+blur  | halo+hole  | halo+spot
-  hole+blur  | hole+halo  | hole+spot
-  spot+blur  | spot+halo  | spot+hole
-
-Layout : 4 rows (metrics) × 16 columns (multi degradation types), 64 subplots.
+Layout : 4 rows (metrics) × 4 columns (PSNR scopes), 16 subplots.
 Each subplot shows all 20 models as bars (coloured by architecture),
 with 95 % CI error bars and significance markers.
-Optional connection lines link the same model across columns.
+Optional connection lines link the same model across PSNR-scope columns.
 
 Usage
 -----
-  python "Draw fig1.2.1.many.complex.py" [input.parquet] [output_stem]
+  python draw_figure2.py [input.parquet] [output_stem]
 
 If called with no arguments:
   - reads  LOCAL_PARQUET  (Windows local path)
@@ -34,22 +27,17 @@ import pandas as pd
 
 SHOW_CONNECTIONS: bool = True   # ← 在这里改：True = 画连线，False = 不画
 
-LOCAL_PARQUET = r"D:\work\figure_table\figure2\classify_with_degradation\classify_with_degradation.parquet"
+LOCAL_PARQUET = r"D:\work\figure_table\figure2\classify_with_PSNR\classify_with_PSNR.parquet"
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Data configuration
 # ══════════════════════════════════════════════════════════════════════════════
 
 MODEL_ORDER = [
-    # Input baseline
     "LQ",
-    # Diffusion
     "Ours", "ResShift", "PowerPaint", "SD-v1.5", "DDPM",
-    # GAN
     "RSCP2GAN", "MDA-Net", "OTE-GAN", "Pix2PixGAN",
-    # Transformer
     "PFT", "RDSTN", "CMT", "GFE-Net",
-    # Pre-training ablations
     "Pre+SK", "Pre+CFG", "Pre+Seg", "Pre+CFG+Seg", "Pre+SK+CFG", "Pre+SK+Seg",
 ]
 
@@ -90,7 +78,7 @@ ARCH_GROUP = {
 }
 
 ARCH_LIST   = ["Input", "Diffusion", "GAN", "Trans.", "Pre+"]
-ARCH_COLORS = {          # pgfplots colour names defined in preamble
+ARCH_COLORS = {
     "Input":     "mygray",
     "Diffusion": "myblue",
     "GAN":       "myred",
@@ -98,41 +86,13 @@ ARCH_COLORS = {          # pgfplots colour names defined in preamble
     "Pre+":      "myorange",
 }
 
-# ── Multi degradation types only (contain "+" in name), sorted by leading type
-DEGRADATION_SCOPES = [
-    "blur+halo",  "blur+hole",  "blur+spot",
-    "color+blur", "color+halo", "color+hole", "color+spot",
-    "halo+blur",  "halo+hole",  "halo+spot",
-    "hole+blur",  "hole+halo",  "hole+spot",
-    "spot+blur",  "spot+halo",  "spot+hole",
+PSNR_SCOPES = ["PSNR<20", "(20, 30)", "(30, 40)", "(40, 40+)"]
+SCOPE_LABELS = [
+    r"PSNR\,$<$\,20\ \ ($n=1547$)",
+    r"PSNR\,$\in$\,(20,\,30)\ \ ($n=5894$)",
+    r"PSNR\,$\in$\,(30,\,40)\ \ ($n=2108$)",
+    r"PSNR\,$\geq$\,40\ \ ($n=1647$)",
 ]
-
-SCOPE_COUNTS = {
-    "blur+halo":  406,
-    "blur+hole":  363,
-    "blur+spot":  377,
-    "color+blur": 728,
-    "color+halo": 760,
-    "color+hole": 757,
-    "color+spot": 703,
-    "halo+blur":  375,
-    "halo+hole":  380,
-    "halo+spot":  385,
-    "hole+blur":  362,
-    "hole+halo":  373,
-    "hole+spot":  384,
-    "spot+blur":  391,
-    "spot+halo":  404,
-    "spot+hole":  382,
-}
-
-def _scope_label(scope: str) -> str:
-    """Build LaTeX column title: degradation name + sample count."""
-    n = SCOPE_COUNTS.get(scope, "?")
-    name = scope.replace("+", r"\,+\,")
-    return rf"{name}\ \ ($n={n}$)"
-
-SCOPE_LABELS = [_scope_label(s) for s in DEGRADATION_SCOPES]
 
 METRICS = ["PSNR", "LPIPS", "VIF", "HARALICK"]
 METRIC_LABELS = [
@@ -143,11 +103,10 @@ METRIC_LABELS = [
 ]
 METRIC_LOGSCALE = {"PSNR": False, "LPIPS": False, "VIF": False, "HARALICK": True}
 
-# ── subplot geometry (cm) ──────────────────────────────────────────────────
-SUBPLOT_W  = 13.5   # axis width
-SUBPLOT_H  = 7.0    # axis height
-GAP_X      = 0.6    # horizontal gap between subplots
-GAP_Y      = 2.8    # vertical gap (accommodates rotated x-tick labels)
+SUBPLOT_W  = 13.5
+SUBPLOT_H  = 7.0
+GAP_X      = 0.6
+GAP_Y      = 2.8
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Helper functions
@@ -162,9 +121,9 @@ def parse_ci(ci_str):
 
 def load_data(parquet_path):
     df = pd.read_parquet(parquet_path)
-    df = df.set_index(["degradations_applied", "model_name"])
+    df = df.set_index(["PSNR_scope", "model_name"])
     out = {}
-    for scope in DEGRADATION_SCOPES:
+    for scope in PSNR_SCOPES:
         for model in MODEL_ORDER:
             for metric in METRICS:
                 try:
@@ -182,8 +141,8 @@ def load_data(parquet_path):
 
 
 def yrange(data, scope, metric, use_log):
-    vals_hi = [data[(scope, m, metric)]["hi"]  for m in MODEL_ORDER if (scope, m, metric) in data]
-    vals_lo = [data[(scope, m, metric)]["lo"]  for m in MODEL_ORDER if (scope, m, metric) in data]
+    vals_hi = [data[(scope, m, metric)]["hi"] for m in MODEL_ORDER if (scope, m, metric) in data]
+    vals_lo = [data[(scope, m, metric)]["lo"] for m in MODEL_ORDER if (scope, m, metric) in data]
     if not vals_hi:
         return 0.0, 1.0
     if use_log:
@@ -224,15 +183,12 @@ POSTAMBLE = r"""
 def generate_tex(data, show_connections: bool) -> str:
     has_triple_star_any = any(
         data.get((sc, m, me), {}).get("sig", "") == "***"
-        for sc in DEGRADATION_SCOPES for me in METRICS
+        for sc in PSNR_SCOPES for me in METRICS
         for m in MODEL_ORDER
     )
 
-    n_cols = len(DEGRADATION_SCOPES)
-    n_rows = len(METRICS)
-
-    total_w = n_cols * SUBPLOT_W + (n_cols - 1) * GAP_X
-    total_h = n_rows * SUBPLOT_H + (n_rows - 1) * GAP_Y
+    total_w = len(PSNR_SCOPES) * SUBPLOT_W + (len(PSNR_SCOPES) - 1) * GAP_X
+    total_h = len(METRICS) * SUBPLOT_H + (len(METRICS) - 1) * GAP_Y
     bb_left   = -3.0
     bb_top    = 2.0
     bb_right  = total_w + 0.5
@@ -252,11 +208,10 @@ def generate_tex(data, show_connections: bool) -> str:
     for mi, model in enumerate(MODEL_ORDER):
         arch_members[ARCH_GROUP[model]].append((mi, model))
 
-    # ── Subplots ──────────────────────────────────────────────────────────────
     for row, (metric, mlabel) in enumerate(zip(METRICS, METRIC_LABELS)):
         use_log = METRIC_LOGSCALE[metric]
 
-        for col, (scope, slabel) in enumerate(zip(DEGRADATION_SCOPES, SCOPE_LABELS)):
+        for col, (scope, slabel) in enumerate(zip(PSNR_SCOPES, SCOPE_LABELS)):
             ax_x = col * (SUBPLOT_W + GAP_X)
             ax_y = -row * (SUBPLOT_H + GAP_Y)
             axname = f"ax{row}{col}"
@@ -296,10 +251,7 @@ def generate_tex(data, show_connections: bool) -> str:
                 f"  /pgf/number format/precision=3}},",
             ]
             if use_log:
-                lines += [
-                    f"  ymode=log,",
-                    f"  log basis y={{10}},",
-                ]
+                lines += [f"  ymode=log,", f"  log basis y={{10}},"]
             if row == 0:
                 lines += [
                     f"  title={{{slabel}}},",
@@ -308,7 +260,6 @@ def generate_tex(data, show_connections: bool) -> str:
             lines.append(r"]")
             lines.append("")
 
-            # ── bars (one \addplot per architecture group) ─────────────────────
             for arch in ARCH_LIST:
                 members = arch_members[arch]
                 color   = ARCH_COLORS[arch]
@@ -335,7 +286,6 @@ def generate_tex(data, show_connections: bool) -> str:
 
             lines.append("")
 
-            # ── significance markers + named coordinates ───────────────────────
             for mi, model in enumerate(MODEL_ORDER):
                 d = data.get((scope, model, metric))
                 if not d:
@@ -361,13 +311,12 @@ def generate_tex(data, show_connections: bool) -> str:
 
             lines += [r"\end{axis}", ""]
 
-    # ── Connection lines ──────────────────────────────────────────────────────
     if show_connections:
-        lines.append("% ── Connection lines: same model, consecutive degradation scopes ──")
-        for row in range(n_rows):
+        lines.append("% ── Connection lines ──────────────────────────────────────────────")
+        for row in range(len(METRICS)):
             for mi, model in enumerate(MODEL_ORDER):
                 color = ARCH_COLORS[ARCH_GROUP[model]]
-                for col in range(n_cols - 1):
+                for col in range(len(PSNR_SCOPES) - 1):
                     c0 = f"C{row}S{col}M{mi}"
                     c1 = f"C{row}S{col+1}M{mi}"
                     lines.append(
@@ -376,8 +325,7 @@ def generate_tex(data, show_connections: bool) -> str:
                     )
         lines.append("")
 
-    # ── Legend ────────────────────────────────────────────────────────────────
-    bottom_of_last_row = (n_rows - 1) * (SUBPLOT_H + GAP_Y) + SUBPLOT_H
+    bottom_of_last_row = (len(METRICS) - 1) * (SUBPLOT_H + GAP_Y) + SUBPLOT_H
     legend_y = -(bottom_of_last_row + 0.8)
     arch_legend_parts = []
     for arch in ARCH_LIST:
@@ -388,7 +336,6 @@ def generate_tex(data, show_connections: bool) -> str:
         )
     legend_content = r"\quad ".join(arch_legend_parts)
     lines += [
-        f"% ── Legend ────────────────────────────────────────────────────────",
         f"\\node[anchor=north west, font=\\small] at (0cm,{legend_y:.2f}cm) {{",
         f"  {legend_content}",
         "};",
@@ -415,7 +362,7 @@ def generate_tex(data, show_connections: bool) -> str:
 
 def main():
     parquet = sys.argv[1] if len(sys.argv) > 1 else LOCAL_PARQUET
-    stem    = sys.argv[2] if len(sys.argv) > 2 else "Draw fig1.2.1.many.complex"
+    stem    = sys.argv[2] if len(sys.argv) > 2 else "Draw fig1.1.1complex"
 
     print(f"Reading: {parquet}")
     data = load_data(parquet)

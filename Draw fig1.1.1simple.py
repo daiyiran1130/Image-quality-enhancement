@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
 """
-Draw fig1.2.1.one.simple.py — Simplified bar chart for SINGLE degradation types.
+draw_figure2_simple.py — Simplified PSNR-classified bar chart.
 
-Single degradation types (5): blur | color | halo | hole | spot
+Selects 5 representative models:
+  Ours  |  SD-v1.5 (baseline)  |  best-other-Diffusion  |  best-GAN  |  best-Trans.
 
-Selects 5 representative models automatically:
-  Ours  |  SD-v1.5  |  best-other-Diffusion  |  best-GAN  |  best-Trans.
-Selection criterion: image-count-weighted mean PSNR across the 5 single scopes.
+Selection is done automatically (image-count-weighted mean PSNR across PSNR scopes).
 
-Layout : 4 rows (metrics) x 5 columns (single degradation types), 20 subplots.
-Each subplot shows 5 bars with 95% CI error bars, value labels, and significance
-bracket markers. Optional connection lines link the same model across columns.
+Layout : 4 rows (metrics) × 4 columns (PSNR scopes), 16 subplots.
+Each subplot shows 5 bars with 95 % CI error bars and significance markers.
+Optional connection lines link the same model across PSNR-scope columns.
 
 Usage
 -----
-  python "Draw fig1.2.1.one.simple.py" [input.parquet] [output_stem]
+  python draw_figure2_simple.py [input.parquet] [output_stem]
 
-If called with no arguments:
-  - reads  LOCAL_PARQUET  (Windows local path)
-  - writes  <stem>.tex  (connection lines controlled by SHOW_CONNECTIONS)
+Generates  <stem>.tex  (connection lines controlled by SHOW_CONNECTIONS switch).
 """
 
 import re
@@ -31,7 +28,7 @@ import pandas as pd
 
 SHOW_CONNECTIONS: bool = True
 
-LOCAL_PARQUET = r"D:\work\figure_table\figure2\classify_with_degradation\classify_with_degradation.parquet"
+LOCAL_PARQUET = r"D:\work\figure_table\figure2\classify_with_PSNR\classify_with_PSNR.parquet"
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Data configuration
@@ -50,25 +47,17 @@ ARCH_GROUP = {
     "Pre+SK+CFG":  "Pre+",      "Pre+SK+Seg":  "Pre+",
 }
 
-ALWAYS_INCLUDE      = {"Ours", "SD-v1.5"}
+ALWAYS_INCLUDE = {"Ours", "SD-v1.5"}
 FAMILIES_TO_REPRESENT = ["Diffusion", "GAN", "Trans."]
 
-# ── Single degradation types only ─────────────────────────────────────────
-DEGRADATION_SCOPES = ["blur", "color", "halo", "hole", "spot"]
-
-SCOPE_COUNTS = {
-    "blur":  700,
-    "color": 734,
-    "halo":  717,
-    "hole":  770,
-    "spot":  745,
-}
-
-def _scope_label(scope: str) -> str:
-    n = SCOPE_COUNTS.get(scope, "?")
-    return rf"{scope}\ \ ($n={n}$)"
-
-SCOPE_LABELS = [_scope_label(s) for s in DEGRADATION_SCOPES]
+PSNR_SCOPES = ["PSNR<20", "(20, 30)", "(30, 40)", "(40, 40+)"]
+SCOPE_LABELS = [
+    r"PSNR\,$<$\,20\ \ ($n=1547$)",
+    r"PSNR\,$\in$\,(20,\,30)\ \ ($n=5894$)",
+    r"PSNR\,$\in$\,(30,\,40)\ \ ($n=2108$)",
+    r"PSNR\,$\geq$\,40\ \ ($n=1647$)",
+]
+SCOPE_COUNTS = {"PSNR<20": 1547, "(20, 30)": 5894, "(30, 40)": 2108, "(40, 40+)": 1647}
 
 METRICS = ["PSNR", "LPIPS", "VIF", "HARALICK"]
 METRIC_LABELS = [
@@ -95,7 +84,6 @@ MODEL_DISPLAY = {
     "CMT":        r"CMT",
 }
 
-# ── subplot geometry (cm) ──────────────────────────────────────────────────
 SUBPLOT_W = 10.0
 SUBPLOT_H = 7.0
 GAP_X     = 0.8
@@ -106,16 +94,15 @@ GAP_Y     = 1.8
 # ══════════════════════════════════════════════════════════════════════════════
 
 def select_models(df_raw: pd.DataFrame) -> list[str]:
-    """Return ordered list of 5 representative models."""
     total = sum(SCOPE_COUNTS.values())
     all_models = df_raw["model_name"].unique().tolist()
 
-    df_idx = df_raw.set_index(["degradations_applied", "model_name"])
     wavg: dict[str, float] = {}
+    df_idx = df_raw.set_index(["PSNR_scope", "model_name"])
     for m in all_models:
         wavg[m] = sum(
             df_idx.loc[(s, m), "PSNR"] * SCOPE_COUNTS[s]
-            for s in DEGRADATION_SCOPES
+            for s in PSNR_SCOPES
             if (s, m) in df_idx.index
         ) / total
 
@@ -132,7 +119,7 @@ def select_models(df_raw: pd.DataFrame) -> list[str]:
         if candidates:
             best = max(candidates, key=candidates.get)
             selected[best] = family
-            print(f"  Best {family}: {best}  (weighted PSNR={candidates[best]:.3f})")
+            print(f"  Best {family}: {best}  (PSNR={candidates[best]:.3f})")
 
     others = sorted(
         [m for m in selected if m not in ALWAYS_INCLUDE],
@@ -140,6 +127,7 @@ def select_models(df_raw: pd.DataFrame) -> list[str]:
     )
     order = ["Ours", "SD-v1.5"] + others
     return [m for m in order if m in selected]
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Colour palette
@@ -156,6 +144,7 @@ ARCH_COLORS = {
 def model_colour(model: str) -> str:
     return ARCH_COLORS.get(ARCH_GROUP.get(model, "?"), "mygray")
 
+
 # ══════════════════════════════════════════════════════════════════════════════
 # Helper functions
 # ══════════════════════════════════════════════════════════════════════════════
@@ -168,9 +157,9 @@ def parse_ci(ci_str: str) -> tuple[float, float]:
 
 
 def load_data(parquet_path: str, models: list[str]) -> dict:
-    df = pd.read_parquet(parquet_path).set_index(["degradations_applied", "model_name"])
+    df = pd.read_parquet(parquet_path).set_index(["PSNR_scope", "model_name"])
     out = {}
-    for scope in DEGRADATION_SCOPES:
+    for scope in PSNR_SCOPES:
         for model in models:
             for metric in METRICS:
                 try:
@@ -199,6 +188,7 @@ def yrange(data: dict, scope: str, metric: str, models: list[str],
     ymin = max(0.0, min(vals_lo) - span * 0.04)
     ymax = max(vals_hi) + span * (0.22 + 0.14 * n_brackets)
     return ymin, ymax
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # LaTeX generation
@@ -231,11 +221,11 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
 
     has_triple_star_any = any(
         data.get((sc, m, me), {}).get("sig", "") == "***"
-        for sc in DEGRADATION_SCOPES for me in METRICS
+        for sc in PSNR_SCOPES for me in METRICS
         for m in models if m != "Ours"
     )
 
-    total_w = len(DEGRADATION_SCOPES) * SUBPLOT_W + (len(DEGRADATION_SCOPES) - 1) * GAP_X
+    total_w = len(PSNR_SCOPES) * SUBPLOT_W + (len(PSNR_SCOPES) - 1) * GAP_X
     total_h = (len(METRICS) - 1) * (SUBPLOT_H + GAP_Y) + SUBPLOT_H
     bb_left, bb_top     = -3.0,  2.0
     bb_right, bb_bottom = total_w + 0.5, -(total_h + 2.5 + (1.0 if has_triple_star_any else 0.0))
@@ -251,7 +241,7 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
     for row, (metric, mlabel) in enumerate(zip(METRICS, METRIC_LABELS)):
         use_log = METRIC_LOGSCALE[metric]
 
-        for col, (scope, slabel) in enumerate(zip(DEGRADATION_SCOPES, SCOPE_LABELS)):
+        for col, (scope, slabel) in enumerate(zip(PSNR_SCOPES, SCOPE_LABELS)):
             ax_x = col * (SUBPLOT_W + GAP_X)
             ax_y = -row * (SUBPLOT_H + GAP_Y)
             axname = f"ax{row}{col}"
@@ -309,7 +299,6 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
             lines.append(r"]")
             lines.append("")
 
-            # ── one \addplot per model (individual colour) ────────────────────
             for mi, (model, color) in enumerate(zip(models, colours)):
                 d = data.get((scope, model, metric))
                 if not d:
@@ -326,7 +315,6 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
 
             lines.append("")
 
-            # ── value labels + connection coordinates ─────────────────────────
             for mi, (model, color) in enumerate(zip(models, colours)):
                 d = data.get((scope, model, metric))
                 if not d:
@@ -339,8 +327,8 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
                     label_y = d["val"] + d["err_hi"] + span * 0.03
                 lines.append(
                     f"\\node[above, font=\\tiny, inner sep=0pt,"
-                    f" text={color}!70!black]"
-                    f" at (axis cs:{x},{label_y:.4f}) {{{d['val']:.3f}}};"
+                    f" text={color}!70!black] "
+                    f"at (axis cs:{x},{label_y:.4f}) {{{d['val']:.3f}}};"
                 )
                 if show_connections:
                     lines.append(
@@ -348,14 +336,14 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
                         f" at (axis cs:{x},{d['val']:.4f});"
                     )
 
-            # ── bracket significance markers (* and ** only) ──────────────────
             if sig_brackets:
-                all_hi = [data[(scope, m, metric)]["hi"]
-                          for m in models if (scope, m, metric) in data]
-                all_lo = [data[(scope, m, metric)]["lo"]
-                          for m in models if (scope, m, metric) in data]
+                all_hi_raw = [data[(scope, m, metric)]["hi"]
+                              for m in models if (scope, m, metric) in data]
+                all_lo_raw = [data[(scope, m, metric)]["lo"]
+                              for m in models if (scope, m, metric) in data]
                 if use_log:
-                    base_y = max(all_hi) * 1.5
+                    max_hi = max(all_hi_raw)
+                    base_y = max_hi * 1.5
                     step_f = 1.5
                     tick_r = 0.87
                     for level, (x2, sig_text) in enumerate(sig_brackets):
@@ -369,8 +357,8 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
                             f" at (axis cs:{mid_x:.2f},{y_brk:.4f}) {{${sig_text}$}};",
                         ]
                 else:
-                    raw_span = max(all_hi) - min(all_lo)
-                    base_y = max(all_hi) + raw_span * 0.08
+                    raw_span = max(all_hi_raw) - min(all_lo_raw)
+                    base_y = max(all_hi_raw) + raw_span * 0.08
                     step   = raw_span * 0.14
                     tick_h = raw_span * 0.03
                     for level, (x2, sig_text) in enumerate(sig_brackets):
@@ -386,13 +374,12 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
 
             lines += [r"\end{axis}", ""]
 
-    # ── Connection lines ──────────────────────────────────────────────────────
     if show_connections:
         lines.append("% ── Connection lines ─────────────────────────────────────────────")
         for row in range(len(METRICS)):
             for mi, model in enumerate(models):
                 color = model_colour(model)
-                for col in range(len(DEGRADATION_SCOPES) - 1):
+                for col in range(len(PSNR_SCOPES) - 1):
                     c0 = f"C{row}S{col}M{mi}"
                     c1 = f"C{row}S{col+1}M{mi}"
                     lines.append(
@@ -401,7 +388,6 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
                     )
         lines.append("")
 
-    # ── Legend ────────────────────────────────────────────────────────────────
     legend_y = -(total_h + 0.8)
     legend_parts = []
     for model, color in zip(models, colours):
@@ -412,7 +398,6 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
         )
     legend_content = r"\quad ".join(legend_parts)
     lines += [
-        f"% ── Legend ─────────────────────────────────────────────────────────",
         f"\\node[anchor=north west, font=\\small] at (0cm,{legend_y:.2f}cm) {{",
         f"  {legend_content}",
         "};",
@@ -433,13 +418,14 @@ def generate_tex(data: dict, models: list[str], show_connections: bool) -> str:
     lines += [r"\end{tikzpicture}", "", r"\end{document}"]
     return "\n".join(lines)
 
+
 # ══════════════════════════════════════════════════════════════════════════════
 # Entry point
 # ══════════════════════════════════════════════════════════════════════════════
 
 def main():
     parquet = sys.argv[1] if len(sys.argv) > 1 else LOCAL_PARQUET
-    stem    = sys.argv[2] if len(sys.argv) > 2 else "Draw fig1.2.1.one.simple"
+    stem    = sys.argv[2] if len(sys.argv) > 2 else "Draw fig1.1.1simple"
 
     print(f"Reading: {parquet}")
     df_raw = pd.read_parquet(parquet)

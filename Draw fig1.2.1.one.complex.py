@@ -176,8 +176,9 @@ def yrange(data, scope, metric, use_log):
 # ══════════════════════════════════════════════════════════════════════════════
 
 PREAMBLE = r"""\documentclass[border=4pt]{standalone}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\usepackage{fontspec}
+\setmainfont{Arial}
+\setsansfont{Arial}
 \usepackage{amsmath,amssymb}
 \usepackage{tikz}
 \usetikzlibrary{positioning,calc}
@@ -402,7 +403,14 @@ def main():
     with open(out_path, "w", encoding="utf-8") as fh:
         fh.write(tex)
     print(f"Written: {out_path}  (连线={'开' if SHOW_CONNECTIONS else '关'})")
-    print(f"\nCompile with:  pdflatex \"{out_path}\"")
+    import subprocess, os
+    print("Compiling to PDF with XeLaTeX ...")
+    subprocess.run(
+        ["xelatex", "-interaction=nonstopmode", os.path.basename(out_path)],
+        cwd=os.path.dirname(os.path.abspath(out_path)),
+        check=True,
+    )
+    print(f"PDF ready: {os.path.splitext(out_path)[0]}.pdf")
 
 
 if __name__ == "__main__":
