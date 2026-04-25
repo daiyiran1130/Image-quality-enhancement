@@ -158,7 +158,7 @@ def generate_simple(parquet_path: str, output_path: str = "table_simple.tex"):
     import subprocess, os
     print("Compiling to PDF with XeLaTeX ...")
     subprocess.run(
-        ["xelatex", "-interaction=nonstopmode", os.path.basename(output_path)],
+        ["xelatex", "--enable-installer", "-interaction=nonstopmode", os.path.basename(output_path)],
         cwd=os.path.dirname(os.path.abspath(output_path)),
         check=True,
     )

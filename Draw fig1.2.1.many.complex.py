@@ -429,7 +429,7 @@ def main():
     import subprocess, os
     print("Compiling to PDF with XeLaTeX ...")
     subprocess.run(
-        ["xelatex", "-interaction=nonstopmode", os.path.basename(out_path)],
+        ["xelatex", "--enable-installer", "-interaction=nonstopmode", os.path.basename(out_path)],
         cwd=os.path.dirname(os.path.abspath(out_path)),
         check=True,
     )
