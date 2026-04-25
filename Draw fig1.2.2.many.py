@@ -95,6 +95,9 @@ xticklabels_str = ','.join(SCOPE_LABELS)
 ln(
     '% Auto-generated -- edit "Draw fig1.2.2.many.py" to regenerate',
     r'\documentclass[tikz,border=8pt]{standalone}',
+    r'\usepackage{fontspec}',
+    r'\setmainfont{Arial}',
+    r'\setsansfont{Arial}',
     r'\usepackage{pgfplots}',
     r'\usepgfplotslibrary{groupplots}',
     r'\usetikzlibrary{calc}',
@@ -215,12 +218,24 @@ ln(
 )
 
 # ── Write ─────────────────────────────────────────────────────────────────────
+import subprocess, os
 output = '\n'.join(L)
+written_path = None
 for path in OUT_PATHS:
     try:
         with open(path, 'w', encoding='utf-8') as fh:
             fh.write(output)
         print('Written: ' + path)
+        written_path = path
     except OSError as e:
         print('Skipped: ' + path + '  (' + str(e) + ')')
 print('Lines:   ' + str(len(L)))
+if written_path:
+    print("Compiling to PDF with XeLaTeX ...")
+    subprocess.run(
+        ["xelatex", "--enable-installer", "-interaction=nonstopmode",
+         os.path.basename(written_path)],
+        cwd=os.path.dirname(os.path.abspath(written_path)),
+        check=True,
+    )
+    print("PDF ready: " + os.path.splitext(written_path)[0] + ".pdf")
